@@ -11,6 +11,7 @@ class path:
     def __init__(self, d, environment, initialize=True):
             self.d = d
             self.environment = environment
+            self.time_last_update=0
             
             # 2. Only generate random points if initialize is True
             if initialize:
@@ -88,10 +89,10 @@ class path:
             x3, y3 = segment_2[0]
             x4, y4 = segment_2[1]
 
-            on_seg1 = (min(x1, x2) <= x <= max(x1, x2) and
-                       min(y1, y2) <= y <= max(y1, y2))
-            on_seg2 = (min(x3, x4) <= x <= max(x3, x4) and
-                       min(y3, y4) <= y <= max(y3, y4))
+            on_seg1 = (min(x1, x2)-1e-2 <= x <= max(x1, x2)+1e-2 and
+                       min(y1, y2)-1e-2 <= y <= max(y1, y2)+1e-2)
+            on_seg2 = (min(x3, x4)-1e-2 <= x <= max(x3, x4)+1e-2 and
+                       min(y3, y4)-1e-2 <= y <= max(y3, y4)+1e-2)
 
             return on_seg1 and on_seg2
 
@@ -129,18 +130,23 @@ class path:
             s+=euclidean((0,0), self.points[0])
             return -s
 
+
+
     def update_fitness(self):
         fitness = self.fitness()
         if fitness > self.best_fitness:
             self.best_fitness = fitness
             self.best_state = [p.copy() for p in self.points] 
+            self.time_last_update = 0
+        else:
+            self.time_last_update += 1
         return fitness
 
 
     def copy(self):
         new_path = path(self.d, self.environment, initialize=False)
         
-       
+        new_path.time_last_update = self.time_last_update
         new_path.points = [p.copy() for p in self.points]
         new_path.velocities = [v.copy() for v in self.velocities]
         new_path.best_state = [p.copy() for p in self.best_state]
