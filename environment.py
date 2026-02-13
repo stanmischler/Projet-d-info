@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 from matplotlib.patches import Rectangle
 
+#Generate the environment with its obstacles, and to create an environment object that can be used by the path and swarm classes.
 class environment:
     def __init__(self, size, obstacles):
         self.size = size # Scalar assumed

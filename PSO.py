@@ -27,6 +27,7 @@ class PSO:
             records.append(self.current_swarm.best_global_fitness)
         return self.current_swarm, records
 
+    #plot the best path found by the PSO algorithm, along with the environment and its obstacles
     def solve_and_plot(self, random_reset=False, reset_probability=0.01, temperature_annealing=False, temperature=1.0,beta=0.99, local_annealing=False, local_temperature=1.0, local_beta=0.99, dimension_learning=False, update_frequency=100):
         swarm, records=self.solve_pso(random_reset, reset_probability, temperature_annealing, temperature,beta, local_annealing, local_temperature, local_beta, dimension_learning, update_frequency)
         plt.plot(records)
@@ -34,6 +35,7 @@ class PSO:
         swarm.swarm_visualize()
         print(self.current_swarm.best_global_fitness)
 
+    #
     def swarm_visualize(self):
         print(self.current_swarm.best_global_fitness)
         self.current_swarm.swarm_visualize()

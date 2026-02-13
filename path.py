@@ -6,6 +6,7 @@ from scipy.spatial.distance import euclidean
 import numpy as np
 import random
 
+
 class path:
 
     def __init__(self, d, environment, initialize=True):
@@ -58,16 +59,19 @@ class path:
         return fig, ax
 
     def is_valid(self):
+        #segment_1=[m1,m2] and segment_2=[m3,m4]
         def intersection(m1, m2, m3, m4):
             x1, y1 = m1
             x2, y2 = m2
             x3, y3 = m3
             x4, y4 = m4
 
+            #direction vectors of the lines
             dx1, dy1 = x2 - x1, y2 - y1
             dx2, dy2 = x4 - x3, y4 - y3
 
             denom = dx1 * dy2 - dy1 * dx2
+            #deal with round errors by adding a small tolerance
             if abs(denom) < 1e-10:
                 return None  # parallel (or coincident)
 
@@ -121,6 +125,7 @@ class path:
                     return False
         return True
 
+    #calculate the size of the path (fitness) / return a very bad fitness if the path is invalid
     def fitness(self):
         if not self.is_valid():
             return -1e8
@@ -131,7 +136,7 @@ class path:
             return -s
 
 
-
+    #update the best_fitness and best_state attributes, and return the current fitness
     def update_fitness(self):
         fitness = self.fitness()
         if fitness > self.best_fitness:
@@ -142,7 +147,7 @@ class path:
             self.time_last_update += 1
         return fitness
 
-
+    #Return a deep copy of the path object
     def copy(self):
         new_path = path(self.d, self.environment, initialize=False)
         
